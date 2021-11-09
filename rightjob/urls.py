@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from jobportal import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.Home, name='Home'),
+    path('ISCO/', views.Occupation, name='Occupation'),
 ]
