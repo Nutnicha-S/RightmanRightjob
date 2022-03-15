@@ -1,10 +1,24 @@
-from django.shortcuts import render
-from .models import ISCO, JobAnalysis
+from django.shortcuts import render, redirect
+from .models import ISCO
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
-# Create your views here.
-# def Home(request):
-#     return render(request, 'Home.html')
+from jobportal import views
 
-def Occupation(request):
-    data = ISCO.objects.all()
-    return render(request, 'Occupation.html', {'Occupation':data})
+def home(request):
+    count = User.objects.count()
+    return render(request, 'home.html', {
+        'count': count
+    })
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {
+        'form': form
+    })
