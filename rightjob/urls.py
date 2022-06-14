@@ -19,6 +19,6 @@ from jobportal import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.Home, name='Home'),
-    path('ISCO/', views.Occupation, name='Occupation'),
+    path('', views.Occupation, name='Occupation'),
+    path('recommend', views.Recommend, name='Recommend'),
 ]
