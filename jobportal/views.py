@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import ISCO, JobAnalysis
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from .forms import Recommend
 import numpy as np
 import os
@@ -18,6 +20,25 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import linear_kernel
+from jobportal import views
+
+def home(request):
+    count = User.objects.count()
+    return render(request, 'home.html', {
+        'count': count
+    })
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {
+        'form': form
+    })
 
 isco = pd.read_csv("jobportal/dataset/ISCOutf.csv",encoding='utf-8')
 tfidf = TfidfVectorizer(stop_words=thai_stopwords())
@@ -53,11 +74,5 @@ def Recommend(request):
     return render(request, 'Result.html', {'data':res})
 
 def Occupation(request):
-    data = ISCO.objects.all()
-    return render(request, 'Occupation.html', {'Occupation':data})
-
-#def Recommend(request):
-#    if request.method == 'GET':
-#        name = request.GET['search']
-#        data = get_recommendations(name)
-#    return render(request, 'Recommend.html', {'data':data})
+    #data = ISCO.objects.all()
+    return render(request, 'Occupation.html')

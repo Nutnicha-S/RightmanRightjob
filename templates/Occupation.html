@@ -4,25 +4,5 @@
 	Keyword for search : <input type="text" name="search">
 	<input type="submit">
   </form>
-<table class="table">
-	<thead class="thead-dark">
-		<tr>
-			<th scope="col">Code</th>
-			<th scope="col">Group</th>
-			<th scope="col">Name</th>
-			<th scope="col">Description</th>
-		</tr>
-	</thead>
-	<tbody>
-	{% for data in Occupation %}
-	<tr>
-		<td>{{data|id}}</td>
-		<td>{{data.Group}}</td>
-		<td>{{data.Name}}</td>
-		<td>{{data.Description}}</td>
-	</tr>
-	{% endfor %}
-	</tbody>
-</table>
 </body>
 </html>
