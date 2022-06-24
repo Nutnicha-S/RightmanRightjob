@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+
+<h1>Edit Profile</h1>
+    <div class="form-group">
+        <form method="POST" action="{% url 'editprofile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ context.form.as_p }}
+            <button class="btn btn-secondary">Save</button>
+        </form>
+    </div>
+
+{% endblock %}

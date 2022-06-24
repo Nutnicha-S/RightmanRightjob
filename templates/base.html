@@ -15,7 +15,7 @@
     <a href="{% url 'profile' %}">Profile</a>
     <a href="{% url 'password_change' %}">Change password</a>
     <a href="{% url 'logout' %}">Logout</a>
-    <strong>You are logged in as visitor</strong>
+    <strong>Welcome {% if user.is_authenticated %}{{ user.username }}{% else %}visitor{% endif %}</strong>
 
     {% else %}
     <a href="{% url 'signup' %}">Sign Up</a>
