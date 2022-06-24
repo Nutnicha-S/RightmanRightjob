@@ -2,20 +2,27 @@
 {% block title %}Edit Profile{% endblock %}
 {% block content %}
 
-<h1>Edit Profile</h1>
-{% for data in dataUser %}
-    <p>First name : {{ data.Firstname }}</p>
-    <p>Last name : {{ data.Lastname }}</p>
-    <p>Email : {{ data.email }}</p>
-    <p>Skills : {{ data.skill }}</p><br/><hr>
-{% endfor %}
-
-<div class="form-group">
-    <form method="POST" action="{% url 'profile' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ context.form.as_p }}
-        <button class="btn btn-secondary">Save</button>
+<h1>Profile</h1>
+{% if dataUser.all %}
+    {% for data in dataUser %}
+        <p>Firstname : {{ data.Firstname }}</p>
+        <p>Lastname : {{ data.Lastname }}</p>
+        <p>Email : {{ data.email }}</p>
+        <p>Skills : {{ data.skills }}</p><br/>
+    {% endfor %}
+    <form action="{% url 'editprofile' %}">
+        <button class="btn btn-secondary">Edit</button>
     </form>
-</div>
+   
+
+{% else %}
+    <div class="form-group">
+        <form method="POST" action="{% url 'profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ context.form.as_p }}
+            <button class="btn btn-secondary">Save</button>
+        </form>
+    </div>
+{% endif %}
 
 {% endblock %}

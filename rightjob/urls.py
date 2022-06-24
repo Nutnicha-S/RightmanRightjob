@@ -16,15 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from jobportal import views
-from jobportal.views import UserEditView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('occupation', views.Occupation, name='occupation'),
     path('', views.home, name='home'),
     path('profile/', views.profile, name='profile'),
+    path('editprofile/', views.editprofile, name='editprofile'),
     path('signup/', views.signup, name='signup'),
-    path('accounts2/', include('django.contrib.auth.urls')),
-    path('accounts/', include('allauth.urls')),
-
+    path('recommend/', views.recommendUser, name='recommend'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

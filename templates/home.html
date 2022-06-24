@@ -6,9 +6,23 @@
 
 {%load debug%}
 	<h2>Homepage</h2>
-	<p>Welcome to My Site, {% if user.is_authenticated %}{{ user.username }}{% else %}visitor{% endif %}!</p>
-	<p>
-		<strong>Total users registered: </strong> {{ count }}
-	</p>
+		<strong>เว็บเเนะนำงานที่ดีที่สุดมั้ง</strong><br>
+		{% if user.is_authenticated %}
+			{% if dataUser.all %}
+				<form action="{% url 'recommend' %}">
+					<button class="btn btn-secondary">ค้นหาอาชีพที่เหมาะกับคุณ</button>
+				</form>
+			{% else %}
+				<p>คุณยังไม่ได้เพิ่มทักษะของคุณ</p>
+				<form action="{% url 'profile' %}">
+					<button class="btn btn-secondary">เพิ่มทักษะ</button>
+				</form>
+			{% endif %}
+		{% else %}
+			<p>สมัครเลย</p>
+			<form action="{% url 'signup' %}">
+				<button class="btn btn-secondary">ลงทะเบียน</button>
+			</form>
+		{% endif %}
 
 {% endblock %}
