@@ -1,4 +1,6 @@
+import uuid
 from djongo import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class ISCO(models.Model):
@@ -13,3 +15,14 @@ class JobAnalysis(models.Model):
     HardSkill = models.TextField()
     SoftSkill = models.TextField()
     Personality = models.TextField()
+
+class MyUser(models.Model):
+    _id = models.ObjectIdField()
+    user = models.CharField(max_length=200, null=True)
+    email = models.EmailField(max_length=200, null=True)
+    Firstname = models.CharField(max_length=200, null=True)
+    Lastname = models.CharField(max_length=200, null=True)
+    skill = models.CharField(max_length=500, null=True)
+
+    def __str__(self):
+        return self.user

@@ -1,8 +1,27 @@
-{%load debug%}
 <h1 align="center">Occupation</h1>
-<form action="recommend" method="GET">
-	Keyword for search : <input type="text" name="search">
-	<input type="submit">
-  </form>
+<a href="{% url 'home' %}">Back</a><br><hr>
+
+	<div class="form-group">
+		<form method="GET" action="{% url 'occupation' %}">
+			Keyword for search : <input type="text" name="search">
+			<button class="btn btn-secondary">Search</button>
+
+			<h4>อาชีพที่แนะนำ</h4> 
+
+			{% for data in dataList %}
+				{{data}}<br>
+			{% endfor %}
+
+		</form>
+	</div>
+
+  <!-- <div class="form-group">
+    <form method="POST" action="{% url 'profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ context.form.as_p }}
+        <button class="btn btn-secondary">Save</button>
+    </form> -->
+</div>
+
 </body>
 </html>

@@ -29,7 +29,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,17 +93,27 @@ WSGI_APPLICATION = 'rightjob.wsgi.application'
 
 DATABASES = {
     'default': {
+        # 'ENGINE': 'django.db.backends.mysql',  
+        # 'NAME': 'my_database',  
+        # 'USER': 'root',  
+        # 'PASSWORD': 'your_password',  
+        # 'HOST': '127.0.0.1',  
+        # 'PORT': '3306',  
+        # 'OPTIONS': {  
+        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         'ENGINE': 'djongo',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
             'host': 'mongodb+srv://ao:jaao%3C241042%3E@cluster0.mdwem.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
             'name': 'Occupation',
             'authMechanism':'SCRAM-SHA-1' #For atlas cloud db
-        }
-    }
+            }
+    },
+
+    # 'Occupation':{
+        
+    #     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -137,3 +159,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+IMPORT_EXPORT_USE_TRANSACTIONS = False
