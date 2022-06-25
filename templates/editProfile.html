@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
 {% block title %}Edit Profile{% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
 <h1>Edit Profile</h1>
     <div class="form-group">
         <form method="POST" action="{% url 'editprofile' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ context.form.as_p }}
-            <button class="btn btn-secondary">Save</button>
+            <button class="btn btn-success">Save</button>
         </form>
     </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 {% endblock %}

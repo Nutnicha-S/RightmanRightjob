@@ -1,28 +1,37 @@
 {% extends 'base.html' %}
 
-
-
 {% block content %}
 
 {%load debug%}
-	<h2>Homepage</h2>
-		<strong>เว็บเเนะนำงานที่ดีที่สุดมั้ง</strong><br>
-		{% if user.is_authenticated %}
-			{% if dataUser.all %}
-				<form action="{% url 'recommend' %}">
-					<button class="btn btn-secondary">ค้นหาอาชีพที่เหมาะกับคุณ</button>
-				</form>
-			{% else %}
-				<p>คุณยังไม่ได้เพิ่มทักษะของคุณ</p>
-				<form action="{% url 'profile' %}">
-					<button class="btn btn-secondary">เพิ่มทักษะ</button>
-				</form>
-			{% endif %}
-		{% else %}
-			<p>สมัครเลย</p>
-			<form action="{% url 'signup' %}">
-				<button class="btn btn-secondary">ลงทะเบียน</button>
-			</form>
-		{% endif %}
 
+<div align="center" class="container">
+	
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+					<h3>เว็บเเนะนำงานที่ดีที่สุด</h3><br>
+					<!-- {% load static %}<img src="../jobportal/static/dj_app/media/house.jpg"> -->
+					{% if user.is_authenticated %}
+						{% if dataUser.all %}
+							<form action="{% url 'recommend' %}">
+								<button class="btn btn-success">ค้นหาอาชีพที่เหมาะกับคุณ</button>
+							</form>
+						{% else %}
+							<p>คุณยังไม่ได้เพิ่มทักษะของคุณ</p>
+							<form action="{% url 'profile' %}">
+								<button class="btn btn-primary">เพิ่มทักษะ</button>
+							</form>
+						{% endif %}
+					{% else %}
+						<p>สมัครเลย</p>
+						<form action="{% url 'signup' %}">
+							<button class="btn btn-primary">ลงทะเบียน</button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

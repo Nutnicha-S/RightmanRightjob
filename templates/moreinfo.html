@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Occupation{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+<h1>{{ key }}</h1>
+	<div class="form-group">
+			<br><strong>คำอธิบาย</strong><br>
+			<div class="card w-95 row mt-2">
+				<div class="card-body">
+				  <h5 class="card-title">{{ context }}</h5>
+				  <p class="card-text"><small>ท่านสามารถค้นหาเพิ่มเติมได้</small></p>
+				  <form method="GET" action="{% url 'occupation' %}">
+					<a href="{% url 'occupation' %}" class="btn btn-primary ml-3">ค้นหาใหม่</a>
+				</form>
+				</div>
+			  </div>
+		</form>
+	</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+</body>
+</html>
+
+{% endblock %}

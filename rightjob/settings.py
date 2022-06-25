@@ -68,6 +68,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'rightjob.urls'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    '/var/www/static/',
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Edit Profile{% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
 
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
 <h1>Profile</h1>
 {% if dataUser.all %}
     {% for data in dataUser %}
@@ -11,7 +17,7 @@
         <p>Skills : {{ data.skills }}</p><br/>
     {% endfor %}
     <form action="{% url 'editprofile' %}">
-        <button class="btn btn-secondary">Edit</button>
+        <button class="btn btn-success">Edit</button>
     </form>
    
 
@@ -24,5 +30,12 @@
         </form>
     </div>
 {% endif %}
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
 
 {% endblock %}
