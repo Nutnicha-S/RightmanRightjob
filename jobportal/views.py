@@ -57,7 +57,7 @@ def editprofile(request):
         form = InputForm(request.POST, request.FILES)
 
         if form.is_valid():
-            MyUser.objects.filter(user=request.user).update(Firstname=request.POST["Firstname"], Lastname=request.POST["Lastname"], skills=request.POST["skills"])
+            MyUser.objects.filter(user=request.user).update(email=request.POST["email"], Firstname=request.POST["Firstname"], Lastname=request.POST["Lastname"], skills=request.POST["skills"])
 
             return HttpResponseRedirect('/profile')
     else:
@@ -107,6 +107,8 @@ def Recommend(request):
     msg=request.GET['search']
     # Filter keyword in Description
     filter = isco.loc[isco['Description'].str.contains(msg, case=False)]
+
+    print(filter)
     # Output the shape of tfidf_matrix
     isco_matrix = tfidf.fit_transform(filter['Description'])
     similarity_matrix = linear_kernel(isco_matrix,isco_matrix)
@@ -122,13 +124,29 @@ def Recommend(request):
 
     # Get the data indices
     data = [i[0] for i in sim_scores]
+
     res = list(filter['Name'].iloc[data])
+    # print(res)
+    # print(res[0])
+
+    # filter2 = isco.loc[isco['Name'].str.contains(res[0], case=False)]
+
+    # print(list(filter2["Description"])[0])
 
     # Return the top 10 most similar data
     return res
 
-def recommendUser(request):
+def getDescriptionByName(request, key):
+    keyName = key
+    filter = isco.loc[isco['Name'].str.contains(keyName, case=False)]
 
+    print("In get Description By Name")
+    print(list(filter["Description"])[0])
+    # code here
+
+    return render(request, 'moreinfo.html', {"context":list(filter["Description"])[0],"key":key})
+
+def recommendUser(request):
     dataUser = MyUser.objects.filter(user=request.user)
     # print(dataUser[0].skills)
     skillStr = dataUser[0].skills
@@ -168,11 +186,25 @@ def recommendUser(request):
         else:
             resDict[data] = 1
 
-    print(resDict)
+    sort_orders = sorted(resDict.items(), key=lambda x: x[1])
 
-    # end
+    labels = []
+    data = []
 
-    return render(request, 'recommendUser.html', {'resDict':resDict})
+    for index in range(len(sort_orders)):
+        labels.append(sort_orders[index][0])
+        data.append(sort_orders[index][1])
+
+    labels.reverse()
+    data.reverse()
+
+    multiData = 100/len(sort_orders)
+    multiplied_list = [round((element * multiData), 2) for element in data]
+
+    zipRes = zip(labels,multiplied_list)
+    return render(request, 'recommendUser.html', {
+        'zipRes': zipRes
+    })
 
 def Occupation(request):
     if (request.GET.get("search")):

@@ -2,21 +2,38 @@
 {% block title %}Occupation{% endblock %}
 {% block content %}
 
-<h1 align="center">Occupation</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+<h1>ค้นหาอาชีพที่เหมาะกับคุณ</h1>
 	<div class="form-group">
 		<form method="GET" action="{% url 'occupation' %}">
 			Keyword for search : <input type="text" name="search">
-			<button class="btn btn-secondary">Search</button>
+			<button class="btn btn-success ml-3">Search</button>
 
-			<h4>อาชีพที่แนะนำ</h4> 
+			<br><strong>อาชีพที่แนะนำ</strong><br>
 
 			{% for data in dataList %}
-				{{data}}<br>
+			<div class="card w-95 row mt-2">
+				<div class="card-body">
+				  <h5 class="card-title">{{ data }}</h5>
+				  <p class="card-text"><small>ท่านสามารถอ่านรายละเอียดเพิ่มเติมได้โดยคลิกที่ปุ่มด้านล่าง</small></p>
+				  <form method="GET" action="{% url 'moreinfo' data %}">
+					<a href="{% url 'moreinfo' data %}" class="btn btn-primary ml-3">อ่านเพิ่มเติม</a>
+				</form>
+				  
+				</div>
+			  </div>
 			{% endfor %}
 
 		</form>
 	</div>
 </div>
+</div>
+
+</div>
+</div>
+
 
 </body>
 </html>
