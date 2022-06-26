@@ -1,5 +1,5 @@
 from cmath import log
-import email
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from traitlets import Instance
@@ -101,40 +101,40 @@ tfidf = TfidfVectorizer(stop_words=thai_stopwords())
 
 #Replace NaN with an empty string 
 isco['Description'] = isco['Description'].fillna('')
+isco['Name'] = isco['Name'].fillna('')
 
 def Recommend(request):
     # Get keyword from template
     msg=request.GET['search']
     # Filter keyword in Description
-    filter = isco.loc[isco['Description'].str.contains(msg, case=False)]
+    a = isco['Description'].str.contains(msg, case=False)
+    b = isco['Name'].str.contains(msg, case=False)
+    c = a+b
+    filterDes = isco.loc[c]
 
-    print(filter)
-    # Output the shape of tfidf_matrix
-    isco_matrix = tfidf.fit_transform(filter['Description'])
-    similarity_matrix = linear_kernel(isco_matrix,isco_matrix)
+    if filterDes.empty:
+        res = 'ไม่มีอาชีพที่คุณค้นหา'
+        return messages.success(request, res)
+    else :
+        # Output the shape of tfidf_matrix
+        isco_matrix = tfidf.fit_transform(filterDes['Description'])
+        similarity_matrix = linear_kernel(isco_matrix,isco_matrix)
 
-    # Get the pairwsie similarity scores of all data
-    sim_scores = list(enumerate(similarity_matrix[0]))
+        # Get the pairwsie similarity scores of all data
+        sim_scores = list(enumerate(similarity_matrix[0]))
 
-    # Sort the data based on the similarity scores
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+        # Sort the data based on the similarity scores
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
-    # Get the scores of the 10 most similar data
-    sim_scores = sim_scores[0:10]
+        # Get the scores of the 10 most similar data
+        sim_scores = sim_scores[0:10]
 
-    # Get the data indices
-    data = [i[0] for i in sim_scores]
+        # Get the data indices
+        data = [i[0] for i in sim_scores]
 
-    res = list(filter['Name'].iloc[data])
-    # print(res)
-    # print(res[0])
+        res = list(filterDes['Name'].iloc[data])
 
-    # filter2 = isco.loc[isco['Name'].str.contains(res[0], case=False)]
-
-    # print(list(filter2["Description"])[0])
-
-    # Return the top 10 most similar data
-    return res
+        return res
 
 def getDescriptionByName(request, key):
     keyName = key
@@ -162,7 +162,10 @@ def recommendUser(request):
             continue
         else:
             # Filter keyword in Description
-            filter = isco.loc[isco['Description'].str.contains(keyword, case=False)]
+            a = isco['Description'].str.contains(keyword, case=False)
+            b = isco['Name'].str.contains(keyword, case=False)
+            c = a+b
+            filter = isco.loc[c]
             # Output the shape of tfidf_matrix
             isco_matrix = tfidf.fit_transform(filter['Description'])
             similarity_matrix = linear_kernel(isco_matrix,isco_matrix)
