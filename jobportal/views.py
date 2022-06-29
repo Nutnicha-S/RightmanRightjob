@@ -1,32 +1,13 @@
-from cmath import log
-from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from traitlets import Instance
-from .models import ISCO, JobAnalysis, MyUser
-from django.views import generic
-from django.urls import reverse_lazy
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import MyUser
+from django.contrib.auth.forms import UserCreationForm
 from .forms import InputForm
-import numpy as np
-import os
-import nltk
-from nltk.tag import pos_tag
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.corpus import words
-from nltk.stem.porter import PorterStemmer
-import pythainlp
 from pythainlp import word_tokenize
 from pythainlp.corpus.common import thai_stopwords
-from pythainlp.corpus import wordnet
-import re,string,random
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import linear_kernel
-from jobportal import views
 
 def home(request):
     # count = User.objects.count()
