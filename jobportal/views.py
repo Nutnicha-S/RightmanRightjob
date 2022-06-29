@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import InputForm
 from pythainlp import word_tokenize
 from pythainlp.corpus.common import thai_stopwords
+from pythainlp.util import normalize
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
@@ -89,7 +90,9 @@ def Recommend(request):
     msg=request.GET['search']
     print(type(msg))
     # Clean the word
-    list_msg = word_tokenize(msg)
+    norm_msg = normalize(msg)
+    print(norm_msg)
+    list_msg = word_tokenize(norm_msg)
     stop_msg = list(thai_stopwords())
     new_msg = [i for i in list_msg if i not in stop_msg]
     real_msg = [value for value in new_msg if value != " "]
