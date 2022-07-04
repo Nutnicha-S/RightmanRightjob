@@ -90,6 +90,7 @@ def Recommend(request):
     msg=request.GET['search']
     print(type(msg))
     # Clean the word
+    x = []
     norm_msg = normalize(msg)
     print(norm_msg)
     list_msg = word_tokenize(norm_msg)
@@ -98,16 +99,19 @@ def Recommend(request):
     real_msg = [value for value in new_msg if value != " "]
     print(real_msg)
 
+    res = []   # เสร็จเเล้ว เพิ่มเเค่ ตรงที่มีจุดสีเเดง ก็คือเราจะให้ [] เปล่าๆ ก่อนเเล้วค่อยเพิ่มเข้าไปตรงบรรทัด 130 โดยใช้ extend จบ สวัสดี
+
     for i in range(len(real_msg)):
         # Filter keyword in Description
         a = isco['Description'].str.contains(real_msg[i], case=False)
         b = isco['Name'].str.contains(real_msg[i], case=False)
         c = a+b
         filterDes = isco.loc[c]
+        print(filterDes)
 
         if filterDes['Description'].empty:
             res = {'ไม่มีอาชีพที่คุณค้นหา กรุณาใช้คำอื่น'}
-            return res
+            # return res
         else :
             # Output the shape of tfidf_matrix
             isco_matrix = tfidf.fit_transform(filterDes['Description'])
@@ -118,16 +122,14 @@ def Recommend(request):
 
             # Sort the data based on the similarity scores
             sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-
             # Get the scores of the 10 most similar data
-            sim_scores = sim_scores[0:10]
-
+            # sim_scores = sim_scores[0:20]
             # Get the data indices
             data = [i[0] for i in sim_scores]
+ 
+            res.extend(list(filterDes['Name'].iloc[data]))
 
-            res = list(filterDes['Name'].iloc[data])
-
-            return res
+    return res
 
 def getDescriptionByName(request, key):
     keyName = key
