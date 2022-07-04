@@ -90,7 +90,6 @@ def Recommend(request):
     msg=request.GET['search']
     print(type(msg))
     # Clean the word
-    x = []
     norm_msg = normalize(msg)
     print(norm_msg)
     list_msg = word_tokenize(norm_msg)
@@ -99,7 +98,7 @@ def Recommend(request):
     real_msg = [value for value in new_msg if value != " "]
     print(real_msg)
 
-    res = []   # เสร็จเเล้ว เพิ่มเเค่ ตรงที่มีจุดสีเเดง ก็คือเราจะให้ [] เปล่าๆ ก่อนเเล้วค่อยเพิ่มเข้าไปตรงบรรทัด 130 โดยใช้ extend จบ สวัสดี
+    res = []
 
     for i in range(len(real_msg)):
         # Filter keyword in Description
