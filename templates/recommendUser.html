@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+	h5 {text-align: center;}
+</style>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
@@ -10,11 +15,15 @@
 	{% for labels, multiplied_list in zipRes %}
 		<div class="card w-95 row mt-2">
 			<div class="card-body">
-				<h5 class="card-title">{{ labels }}</h5>
+				{% if labels == 'ไม่มีอาชีพที่คุณค้นหา กรุณาใช้คำอื่น' %}
+					<h5>{{ labels }}</h5>
+				{% else %}
+				<h4 class="card-title">{{ labels }}</h4>
 				<p class="card-text"><small>โดยมีคะเเนนรวมคือ {{ multiplied_list }} %</small></p>
 				<div align="right" class="container">
 					<form method="GET" action="{% url 'moreinfo' labels %}">
 						<a href="{% url 'moreinfo' labels %}" class="btn btn-primary ml-3">อ่านเพิ่มเติม</a>
+				{% endif %}
 					</form>
 				</div>
 			</div>

@@ -149,22 +149,30 @@ def recommendUser(request):
     keywordList = skillStr.rstrip().split(' ')
     print(keywordList)
 
+    msg = []
+    for value in keywordList:
+        # Clean the word
+        norm_msg = normalize(value)
+        print(norm_msg)
+        list_msg = word_tokenize(norm_msg)
+        stop_msg = list(thai_stopwords())
+        new_msg = [i for i in list_msg if i not in stop_msg]
+        msg.extend(new_msg)
+        print(msg)
+
     resDict = {}
     res = []
-    for keyword in keywordList:
-        if keyword == " ":
-            continue
-        else:
-            # Filter keyword in Description
-            a = isco['Description'].str.contains(keyword, case=False)
-            b = isco['Name'].str.contains(keyword, case=False)
-            c = a+b
-            filter = isco.loc[c]
+    for keyword in range(len(msg)):
+        # Filter keyword in Description
+        a = isco['Description'].str.contains(msg[keyword], case=False)
+        b = isco['Name'].str.contains(msg[keyword], case=False)
+        c = a+b
+        filter = isco.loc[c]
 
-            # if filter.empty:
-            #     zipRes = 'ไม่มีอาชีพที่คุณค้นหา'
-            #     return render('recommendUser.html',messages.success(request, zipRes))
-            #else:
+        if filter['Description'].empty:
+            res = {'ไม่มีอาชีพที่คุณค้นหา กรุณาใช้คำอื่น'}
+        #     return render('recommendUser.html',messages.success(request, zipRes))
+        else:
             # Output the shape of tfidf_matrix
             isco_matrix = tfidf.fit_transform(filter['Description'])
             similarity_matrix = linear_kernel(isco_matrix,isco_matrix)
@@ -176,23 +184,29 @@ def recommendUser(request):
             sim_scores = sim_scores[0:10]
             # Get the data indices
             data = [i[0] for i in sim_scores]
+
             res.extend(list(filter['Name'].iloc[data]))
+
     for data in res:
         if data in resDict:
             resDict[data] += 1
         else:
             resDict[data] = 1
+
     sort_orders = sorted(resDict.items(), key=lambda x: x[1])
     labels = []
     data = []
+
     for index in range(len(sort_orders)):
         labels.append(sort_orders[index][0])
         data.append(sort_orders[index][1])
+
     labels.reverse()
     data.reverse()
     multiData = 100/len(sort_orders)
     multiplied_list = [round((element * multiData), 2) for element in data]
     zipRes = zip(labels,multiplied_list)
+
     return render(request, 'recommendUser.html', {
         'zipRes': zipRes
     })
